@@ -9,7 +9,8 @@ var Post = database.Schema({
     id:             {type: String, required: true, unique: true},
     title:          {type: String, required: true},
     author:         {type: database.Schema.Types.ObjectId, ref: "Users"},
-    created:        {type: Date, default: Date.now}
+    created:        {type: Date, default: Date.now},
+    content:        {type: String}
 });
 
 // attach plugins
