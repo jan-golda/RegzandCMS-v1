@@ -54,9 +54,7 @@ module.exports.checkUser = function checkUser(req, res, next){
 		return next();
 
 	// set response code to 403 - Forbidden
-	var err = new Error("Forbidden");
-    err.status = 403;
-    return next(err);
+	return res.sendStatus(403).end();
 };
 
 // login request
