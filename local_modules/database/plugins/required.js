@@ -14,6 +14,7 @@ module.exports = function requiredPlugin(schema, options){
                 error.field = e;
             return next(error);
         }
+        next();
     });
 
 };

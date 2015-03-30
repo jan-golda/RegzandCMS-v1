@@ -25,6 +25,7 @@ module.exports = function uniquePlugin(schema, options){
                 return next(error);
             });
         }
+        next();
     });
 
 };

@@ -17,7 +17,7 @@ module.exports.registerRoutes = function registerRoutes(router) {
                     throw err;
 
                 res.json(posts).end();
-            })
+            });
         })
 
         // create post
