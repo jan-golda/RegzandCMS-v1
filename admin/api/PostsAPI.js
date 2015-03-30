@@ -35,7 +35,7 @@ module.exports.registerRoutes = function registerRoutes(router) {
                 post.created = date;
 
             //save to db
-            date.save(function(err){
+            post.save(function(err){
                 // TODO: Add arrors handling
                 if(err)
                     return res.json(err).end();
