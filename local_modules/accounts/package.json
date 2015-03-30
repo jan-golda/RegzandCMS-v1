@@ -1,0 +1,12 @@
+{
+  "name": "accounts",
+  "private": true,
+  "version": "1.1.0",
+  "main": "index.js",
+  "author": "Jan Golda (Regzand)",
+  "dependencies": {
+    "passport": "^0.2.1",
+    "passport-local": "^1.0.0",
+    "bcrypt": "^0.8.2"
+  }
+}

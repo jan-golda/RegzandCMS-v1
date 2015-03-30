@@ -1,0 +1,11 @@
+{
+  "adminSubomain": "admin",
+  "port": 80,
+  "sessionSecret": "",
+  "database": {
+    "url": "localhost",
+    "db": "RegzandCMS",
+    "user": false,
+    "password": false
+  }
+}
