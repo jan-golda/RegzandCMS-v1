@@ -1,7 +1,8 @@
 {
   "adminSubomain": "admin",
   "port": 80,
-  "sessionSecret": "",
+  "sessionSecret": "secret",
+  "loggingLevel": "dump",
   "database": {
     "url": "localhost",
     "db": "RegzandCMS",
