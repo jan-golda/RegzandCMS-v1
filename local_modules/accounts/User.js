@@ -17,19 +17,17 @@ var User = database.Schema({
     displayname:    String,
 	avatar:         String,
 
-	groups:         [{type: database.Schema.Types.ObjectId, ref: "Groups"}]
+	groups:         [{type: database.Schema.Types.ObjectId, ref: "Group"}]
 });
 
 // filling automatic values
-User.post('init', function(next){
+User.post('init', function(doc){
 
-    if(this.displayname === undefined || this.displayname === null)
-        this.displayname = this.username;
+    if(doc.displayname === undefined || doc.displayname === null)
+        doc.displayname = doc.username;
 
-    if(this.avatar === undefined || this.avatar === null)
-        this.avatar = 'dafault';
-
-    next();
+    if(doc.avatar === undefined || doc.avatar === null)
+        doc.avatar = 'dafault';
 });
 
 // attach plugins
