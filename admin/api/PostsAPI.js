@@ -10,6 +10,16 @@ module.exports.registerRoutes = function registerRoutes(router) {
 
     router.route('/posts')
 
+        // get all posts
+        .get(function(req,res){
+            Post.find({}, function(err, posts){
+                if(err)
+                    throw err;
+
+                res.json(posts).end();
+            })
+        })
+
         // create post
         .post(function(req,res){
             var post = new Post();
@@ -17,7 +27,8 @@ module.exports.registerRoutes = function registerRoutes(router) {
             // set properties
             post.id = req.body.id;
             post.title = req.body.title;
-            post.author = req.user._id;
+            post.author = req.user._id; // TODO: author from request
+            post.content = req.body.content;
             // set date
             var date = new Date(req.body.created);
             if(utils.isDateValid(date))
