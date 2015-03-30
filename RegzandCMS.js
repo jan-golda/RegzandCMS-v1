@@ -6,6 +6,7 @@ GLOBAL.CMS_ROOT		        = __dirname;
 GLOBAL.CMS_LOCAL_MODULES 	= path.join(CMS_ROOT, 'local_modules');
 GLOBAL.CMS_PAGE 	        = path.join(CMS_ROOT, 'page');
 GLOBAL.CMS_ADMIN 	        = path.join(CMS_ROOT, 'admin');
+GLOBAL.CMS_MODELS 	        = path.join(CMS_ROOT, 'models');
 
 // defining function to require local modules
 GLOBAL.requireLocal = function (name){
