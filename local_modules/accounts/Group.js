@@ -5,7 +5,7 @@ var lastModifiedPlugin      = requireLocal('database/plugins/lastModified');
 
 // Group model
 var Group = database.Schema({
-	name:           {type: String, required: true, unique: true},
+	name:           {type: String, required: true, unique: true, trim: true},
 	weight:         {type: Number, default: 0},
 	permissions:    [String]
 });
