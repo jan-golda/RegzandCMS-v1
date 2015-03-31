@@ -12,12 +12,18 @@ module.exports.registerRoutes = function registerRoutes(router) {
 
         // get all posts
         .get(function(req,res){
-            Post.find({}, function(err, posts){
-                if(err)
-                    throw err;
+            Post.find()
+                .select("-_id")
+                .populate({
+                    path: "author",
+                    select: "-_id username email displayname avatar"
+                })
+                .exec(function(err, posts){
+                    if(err)
+                        throw err;
 
-                res.json(posts).end();
-            });
+                    res.json(posts).end();
+                });
         })
 
         // create post
