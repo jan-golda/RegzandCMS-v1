@@ -1,8 +1,6 @@
 // import private modules
 var utils		            = requireLocal('utils');
 var database	            = requireLocal('database');
-var requiredPlugin          = requireLocal('database/plugins/required');
-var uniquePlugin            = requireLocal('database/plugins/unique');
 var lastModifiedPlugin      = requireLocal('database/plugins/lastModified');
 
 // import public modules
@@ -31,8 +29,6 @@ User.post('init', function(doc){
 });
 
 // attach plugins
-User.plugin(requiredPlugin);
-User.plugin(uniquePlugin);
 User.plugin(lastModifiedPlugin);
 
 // check user password

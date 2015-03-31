@@ -1,7 +1,5 @@
 // private modules
 var database	             = requireLocal('database');
-var requiredPlugin          = requireLocal('database/plugins/required');
-var uniquePlugin            = requireLocal('database/plugins/unique');
 var lastModifiedPlugin      = requireLocal('database/plugins/lastModified');
 
 
@@ -13,8 +11,6 @@ var Group = database.Schema({
 });
 
 // attach plugins
-Group.plugin(requiredPlugin);
-Group.plugin(uniquePlugin);
 Group.plugin(lastModifiedPlugin);
 
 // exports
