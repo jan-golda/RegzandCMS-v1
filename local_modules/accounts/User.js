@@ -15,7 +15,8 @@ var User = database.Schema({
     displayname:    String,
 	avatar:         String,
 
-	groups:         [{type: database.Schema.Types.ObjectId, ref: "Group"}]
+	groups:         [{type: database.Schema.Types.ObjectId, ref: "Group"}],
+    permissions:    [{type: String, trim: true, lowercase: true}]
 });
 
 // filling automatic values
@@ -41,11 +42,17 @@ User.methods.getAllPermissions = function getAllPermissions(){
     // merging all permissions
     var out = {};
     this.groups.forEach(function(e){
-        utils.absorb(out, e.permissions);
+        utils.absorb(out, e.getPermissions());
     });
 
     // add private permissions
-    utils.absorb(out, this.permissions);
+    this.permissions.forEach(function(e){
+        if(utils.startsWith(e, "-")){
+            out[e.substr(1)] = false;
+        }else{
+            out[e] = true;
+        }
+    });
 
     // returning permissions
     return out;
