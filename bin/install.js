@@ -12,5 +12,9 @@ fs.readdirSync(lib).forEach(function(mod){
     if(!fs.existsSync(path.join(modPath, 'package.json'))) return;
 
     // install folder
+    console.log("[Installing dependencies for "+mod+" module]");
     cp.spawn('npm', ['i'], { env: process.env, cwd: modPath, stdio: 'inherit' });
 });
+
+console.log("[Installing global dependencies]");
+cp.spawn('npm', ['i'], { env: process.env, cwd: path.resolve(__dirname, "../"), stdio: 'inherit' });
