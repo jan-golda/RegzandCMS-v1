@@ -22,6 +22,9 @@ module.exports.plugin = function(schema, options){
                 case "email":
                     email(schemaType);
                     break;
+                case "url":
+                    url(schemaType);
+                    break;
             }
         });
     })
@@ -56,4 +59,12 @@ function email(schemaType){
             return respond(true);
         return respond( valid.isEmail(value) );
     }, "email");
+}
+
+function url(schemaType){
+    schemaType.validate(function(value, respond){
+        if(value===undefined || value===null)
+            return respond(true);
+        return respond( valid.isURL(value) );
+    }, "url");
 }
