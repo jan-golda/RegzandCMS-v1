@@ -35,6 +35,9 @@ module.exports.plugin = function(schema, options){
                 case "float":
                     float(schemaType);
                     break;
+                case "date":
+                    date(schemaType);
+                    break;
             }
         });
     })
@@ -109,4 +112,12 @@ function float(schemaType){
             return respond(true);
         return respond( valid.isFloat(value) );
     }, "float");
+}
+
+function date(schemaType){
+    schemaType.validate(function(value, respond){
+        if(value===undefined || value===null)
+            return respond(true);
+        return respond( valid.isDate(value) );
+    }, "date");
 }
