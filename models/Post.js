@@ -5,15 +5,18 @@ var lastModifiedPlugin      = requireLocal('database/plugins/lastModified');
 
 // Post model
 var Post = database.Schema({
-    id:             {type: String, trim: true, lowercase: true, validator: ['required','unique']},
-    title:          {type: String, trim: true, validator: ['required']},
+    id:             {type: String, trim: true, lowercase: true},
+    title:          {type: String, trim: true},
     author:         {type: database.Schema.Types.ObjectId, ref: "User"},
     created:        {type: Date, default: Date.now},
     content:        {type: String}
 });
 
 // attach plugins
-Post.plugin(validator.plugin);
+Post.plugin(validator, {
+    id: ['required','unique'],
+    title: ['required']
+});
 Post.plugin(lastModifiedPlugin);
 
 // exports
