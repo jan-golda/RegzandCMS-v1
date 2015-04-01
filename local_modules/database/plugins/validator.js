@@ -75,16 +75,25 @@ var validators = {
     "int": function(doc,path,cb){
         if(!doc[path])
             return cb(true);
-        return cb(valid.isInt(doc[path]));
+        if(!valid.isInt(doc[path]))
+            return cb(false);
+        doc[path] = valid.toInt(doc[path]);
+        return cb(true);
     },
     "float": function(doc,path,cb){
         if(!doc[path])
             return cb(true);
-        return cb(valid.isFloat(doc[path]));
+        if(!valid.isFloat(doc[path]))
+            return cb(false);
+        doc[path] = valid.toFloat(doc[path]);
+        return cb(true);
     },
     "date": function(doc,path,cb){
         if(!doc[path])
             return cb(true);
-        return cb(valid.isDate(doc[path]));
+        if(!valid.isDate(doc[path]))
+            return cb(false);
+        doc[path] = valid.toDate(doc[path]);
+        return cb(true);
     }
 };
