@@ -5,6 +5,7 @@
   "main": "index.js",
   "author": "Jan Golda (Regzand)",
   "dependencies": {
-    "mongoose": "^4.0.1"
+    "mongoose": "^4.0.1",
+    "validator": "^3.37.0"
   }
 }
