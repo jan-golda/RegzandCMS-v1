@@ -35,18 +35,18 @@ module.exports.registerRoutes = function registerRoutes(router) {
             post.title = req.body.title;
             post.author = req.user._id; // TODO: author from request
             post.content = req.body.content;
-            // set date
-            var date = new Date(req.body.created);
-            if(utils.isDateValid(date))
-                post.created = date;
+            post.created = req.body.created;
 
-            //save to db
-            post.save(function(err){
-                // TODO: Add arrors handling
-                if(err)
-                    return res.json(err).end();
+            post.verify(function(result){
+                if(result)
+                    return res.status(400).json(result).end();
 
-                return res.sendStatus(201).end();
+                post.save(function(err){
+                    if(err)
+                        throw err;
+
+                    return res.sendStatus(201).end();
+                });
             });
         });
 
