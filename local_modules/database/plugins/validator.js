@@ -32,6 +32,9 @@ module.exports.plugin = function(schema, options){
                 case "int":
                     int(schemaType);
                     break;
+                case "float":
+                    float(schemaType);
+                    break;
             }
         });
     })
@@ -98,4 +101,12 @@ function int(schemaType){
             return respond(true);
         return respond( valid.isInt(value) );
     }, "int");
+}
+
+function float(schemaType){
+    schemaType.validate(function(value, respond){
+        if(value===undefined || value===null)
+            return respond(true);
+        return respond( valid.isFloat(value) );
+    }, "float");
 }
