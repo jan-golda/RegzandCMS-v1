@@ -1,6 +1,7 @@
 // import private modules
 var utils		            = requireLocal('utils');
 var database	            = requireLocal('database');
+var validator               = requireLocal('database/plugins/validator');
 var lastModifiedPlugin      = requireLocal('database/plugins/lastModified');
 
 // import public modules
@@ -8,9 +9,9 @@ var bcrypt	    = require('bcrypt-nodejs');
 
 // User model
 var User = database.Schema({
-	username:       {type: String, required: true, unique: true, trim: true, lowercase: true},
-	password:       {type: String, required: true},
-    email:          {type: String, required: true, unique: true, trim: true},
+	username:       {type: String, trim: true, lowercase: true, validator: ['required','unique']},
+	password:       {type: String, validator: ['required']},
+    email:          {type: String, trim: true, validator: ['required','unique']},
 
     displayname:    String,
 	avatar:         String,
@@ -30,6 +31,7 @@ User.post('init', function(doc){
 });
 
 // attach plugins
+User.plugin(validator.plugin);
 User.plugin(lastModifiedPlugin);
 
 // check user password
