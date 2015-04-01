@@ -1,3 +1,6 @@
+// public modules
+var valid   = require('../node_modules/validator');
+
 // exports
 module.exports = {};
 
@@ -15,6 +18,9 @@ module.exports.plugin = function(schema, options){
                     break;
                 case "unique":
                     unique(schemaType);
+                    break;
+                case "email":
+                    email(schemaType);
                     break;
             }
         });
@@ -42,4 +48,12 @@ function unique(schemaType){
                 return respond(count==0);
             });
     }, "unique");
+}
+
+function email(schemaType){
+    schemaType.validate(function(value, respond){
+        if(value===undefined || value===null)
+            return respond(true);
+        return respond( valid.isEmail(value) );
+    }, "email");
 }
