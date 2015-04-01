@@ -9,9 +9,9 @@ var bcrypt	    = require('bcrypt-nodejs');
 
 // User model
 var User = database.Schema({
-	username:       {type: String, trim: true, lowercase: true, validator: ['required','unique']},
-	password:       {type: String, validator: ['required']},
-    email:          {type: String, trim: true, validator: ['required','unique']},
+	username:       {type: String, trim: true, lowercase: true},
+	password:       {type: String},
+    email:          {type: String, trim: true},
 
     displayname:    String,
 	avatar:         String,
@@ -31,7 +31,11 @@ User.post('init', function(doc){
 });
 
 // attach plugins
-User.plugin(validator.plugin);
+User.plugin(validator, {
+    username: ['required','unique'],
+    password: ['required'],
+    email: ['required','unique']
+});
 User.plugin(lastModifiedPlugin);
 
 // check user password
