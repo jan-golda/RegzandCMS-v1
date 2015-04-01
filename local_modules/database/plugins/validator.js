@@ -1,137 +1,90 @@
+// rivate modules
+var utils   = requireLocal("utils");
+
 // public modules
 var valid   = require('../node_modules/validator');
+var async   = require('../node_modules/async');
 
 // exports
-module.exports = {};
+module.exports = function(schema, options) {
+    schema.methods.verify = function(callback){
+        var self = this;
+        var out = {};
 
-// errors parser
-module.exports.parseError = function(error){
-    var out = {};
+        // forEach path
+        async.each(Object.keys(options), function(path, cb1){
+            // forEach validator
+            async.rejectSeries(options[path], function(item, cb2){
+                item = item.toLowerCase();
 
-    if(error.name !== "ValidationError")
-        return false;
+                if(!validators[item])
+                    return cb2(true);
 
-    for(var key in error.errors){
-        if(!error.errors.hasOwnProperty(key)) return;
-        out[error.errors[key].path] = error.errors[key].message;
-    }
-    return out;
-};
-
-// mongoose plugin
-module.exports.plugin = function(schema, options){
-    schema.eachPath(function(path, schemaType){
-        if(!schemaType.options || !schemaType.options.validator) return;
-
-        schemaType.options.validator.forEach(function(type){
-            switch(type.toLowerCase()){
-                case "required":
-                    required(schemaType);
-                    break;
-                case "unique":
-                    unique(schemaType);
-                    break;
-                case "email":
-                    email(schemaType);
-                    break;
-                case "url":
-                    url(schemaType);
-                    break;
-                case "ip":
-                    ip(schemaType);
-                    break;
-                case "hexcolor":
-                    hexColor(schemaType);
-                    break;
-                case "int":
-                    int(schemaType);
-                    break;
-                case "float":
-                    float(schemaType);
-                    break;
-                case "date":
-                    date(schemaType);
-                    break;
-            }
+                validators[item](self,path,cb2);
+            }, function(results) {
+                if (results.length)
+                    out[path] = results;
+                cb1();
+            });
+        }, function(err){
+            if(utils.isEmpty(out))
+                return callback(false);
+            callback(out);
         });
-    })
+
+    };
 };
 
-function required(schemaType){
-    schemaType.validate(function(value, respond){
-        return respond( !!value );
-    }, "required");
-}
-
-function unique(schemaType){
-    schemaType.validate(function(value, respond){
-        if(value===undefined || value===null)
-            return respond(true);
-
-        this.model(this.constructor.modelName)
+var validators = {
+    "required": function(doc,path,cb){
+        cb(!!doc[path]);
+    },
+    "unique": function(doc,path,cb){
+        if(!doc[path])
+            return cb(true);
+        doc.model(doc.constructor.modelName)
             .count()
-            .where(schemaType.path).equals(value)
-            .where("_id").ne(this._id)
+            .where(path).equals(doc[path])
+            .where("_id").ne(doc._id)
             .exec(function(err, count){
                 if(err)
                     throw err;
-                return respond(count==0);
+                return cb(count==0);
             });
-    }, "unique");
-}
-
-function email(schemaType){
-    schemaType.validate(function(value, respond){
-        if(value===undefined || value===null)
-            return respond(true);
-        return respond( valid.isEmail(value) );
-    }, "email");
-}
-
-function url(schemaType){
-    schemaType.validate(function(value, respond){
-        if(value===undefined || value===null)
-            return respond(true);
-        return respond( valid.isURL(value) );
-    }, "url");
-}
-
-function ip(schemaType){
-    schemaType.validate(function(value, respond){
-        if(value===undefined || value===null)
-            return respond(true);
-        return respond( valid.isIP(value) );
-    }, "ip");
-}
-
-function hexColor(schemaType){
-    schemaType.validate(function(value, respond){
-        if(value===undefined || value===null)
-            return respond(true);
-        return respond( valid.isHexColor(value) );
-    }, "hexColor");
-}
-
-function int(schemaType){
-    schemaType.validate(function(value, respond){
-        if(value===undefined || value===null)
-            return respond(true);
-        return respond( valid.isInt(value) );
-    }, "int");
-}
-
-function float(schemaType){
-    schemaType.validate(function(value, respond){
-        if(value===undefined || value===null)
-            return respond(true);
-        return respond( valid.isFloat(value) );
-    }, "float");
-}
-
-function date(schemaType){
-    schemaType.validate(function(value, respond){
-        if(value===undefined || value===null)
-            return respond(true);
-        return respond( valid.isDate(value) );
-    }, "date");
-}
+    },
+    "email": function(doc,path,cb){
+        if(!doc[path])
+            return cb(true);
+        return cb(valid.isEmail(doc[path]));
+    },
+    "url": function(doc,path,cb){
+        if(!doc[path])
+            return cb(true);
+        return cb(valid.isURL(doc[path]));
+    },
+    "ip": function(doc,path,cb){
+        if(!doc[path])
+            return cb(true);
+        return cb(valid.isIP(doc[path]));
+    },
+    "hex-color": function(doc,path,cb){
+        if(!doc[path])
+            return cb(true);
+        return cb(valid.isHexColor(doc[path]));
+    },
+    "int": function(doc,path,cb){
+        if(!doc[path])
+            return cb(true);
+        return cb(valid.isInt(doc[path]));
+    },
+    "float": function(doc,path,cb){
+        if(!doc[path])
+            return cb(true);
+        return cb(valid.isFloat(doc[path]));
+    },
+    "date": function(doc,path,cb){
+        if(!doc[path])
+            return cb(true);
+        return cb(valid.isDate(doc[path]));
+    }
+};
