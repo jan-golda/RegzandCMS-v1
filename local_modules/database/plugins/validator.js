@@ -10,9 +10,7 @@ module.exports.plugin = function(schema, options){
         if(!schemaType.options || !schemaType.options.validator) return;
 
         schemaType.options.validator.forEach(function(type){
-            type = type.toLowerCase();
-
-            switch(type){
+            switch(type.toLowerCase()){
                 case "required":
                     required(schemaType);
                     break;
@@ -27,6 +25,9 @@ module.exports.plugin = function(schema, options){
                     break;
                 case "ip":
                     ip(schemaType);
+                    break;
+                case "hexcolor":
+                    hexColor(schemaType);
                     break;
             }
         });
@@ -78,4 +79,12 @@ function ip(schemaType){
             return respond(true);
         return respond( valid.isIP(value) );
     }, "ip");
+}
+
+function hexColor(schemaType){
+    schemaType.validate(function(value, respond){
+        if(value===undefined || value===null)
+            return respond(true);
+        return respond( valid.isHexColor(value) );
+    }, "hexColor");
 }
