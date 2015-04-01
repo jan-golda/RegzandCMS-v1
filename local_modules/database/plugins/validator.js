@@ -9,7 +9,7 @@ module.exports.parseError = function(error){
     var out = {};
 
     if(error.name !== "ValidationError")
-        return out;
+        return false;
 
     for(var key in error.errors){
         if(!error.errors.hasOwnProperty(key)) return;
