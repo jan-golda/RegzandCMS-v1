@@ -4,6 +4,20 @@ var valid   = require('../node_modules/validator');
 // exports
 module.exports = {};
 
+// errors parser
+module.exports.parseError = function(error){
+    var out = {};
+
+    if(error.name !== "ValidationError")
+        return out;
+
+    for(var key in error.errors){
+        if(!error.errors.hasOwnProperty(key)) return;
+        out[error.errors[key].path] = error.errors[key].message;
+    }
+    return out;
+};
+
 // mongoose plugin
 module.exports.plugin = function(schema, options){
     schema.eachPath(function(path, schemaType){
