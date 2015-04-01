@@ -7,13 +7,15 @@ var utils	                 = requireLocal('utils');
 
 // Group model
 var Group = database.Schema({
-	name:           {type: String, trim: true, validator: ['required','unique']},
+	name:           {type: String, trim: true},
 	weight:         {type: Number, default: 0},
 	permissions:    [{type: String, trim: true, lowercase: true}]
 });
 
 // attach plugins
-Group.plugin(validator.plugin);
+Group.plugin(validator, {
+    name: ['required', 'unique']
+});
 Group.plugin(lastModifiedPlugin);
 
 // methods
