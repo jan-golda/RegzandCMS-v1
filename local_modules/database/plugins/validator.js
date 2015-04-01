@@ -29,6 +29,9 @@ module.exports.plugin = function(schema, options){
                 case "hexcolor":
                     hexColor(schemaType);
                     break;
+                case "int":
+                    int(schemaType);
+                    break;
             }
         });
     })
@@ -87,4 +90,12 @@ function hexColor(schemaType){
             return respond(true);
         return respond( valid.isHexColor(value) );
     }, "hexColor");
+}
+
+function int(schemaType){
+    schemaType.validate(function(value, respond){
+        if(value===undefined || value===null)
+            return respond(true);
+        return respond( valid.isInt(value) );
+    }, "int");
 }
