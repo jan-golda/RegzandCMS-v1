@@ -25,6 +25,9 @@ module.exports.plugin = function(schema, options){
                 case "url":
                     url(schemaType);
                     break;
+                case "ip":
+                    ip(schemaType);
+                    break;
             }
         });
     })
@@ -67,4 +70,12 @@ function url(schemaType){
             return respond(true);
         return respond( valid.isURL(value) );
     }, "url");
+}
+
+function ip(schemaType){
+    schemaType.validate(function(value, respond){
+        if(value===undefined || value===null)
+            return respond(true);
+        return respond( valid.isIP(value) );
+    }, "ip");
 }
