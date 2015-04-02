@@ -1,6 +1,7 @@
 # my ignores
 node_modules/
 *.log
+page/templates/
 
 # Created by .ignore support plugin (hsz.mobi)
 ### JetBrains template
